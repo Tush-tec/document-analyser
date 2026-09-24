@@ -16,6 +16,11 @@ app = FastAPI(
 
 
 app.include_router(contracts_router)
+app.include_router(auth.router,       prefix="/api/v1/auth",       tags=["auth"])
+app.include_router(documents.router,  prefix="/api/v1/documents",  tags=["documents"])
+app.include_router(jobs.router,       prefix="/api/v1/jobs",       tags=["jobs"])
+app.include_router(query.router,      prefix="/api/v1",            tags=["query"])
+app.include_router(feedback.router,   prefix="/api/v1/feedback",   tags=["feedback"])
 
 
 @app.get('/')
