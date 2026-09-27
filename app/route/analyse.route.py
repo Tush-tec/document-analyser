@@ -48,4 +48,5 @@ async def analyse_contract(contract_id:str):
             })
     
     result = await analyse_contract(contract_id, contract["text_content"])
-    
+
+

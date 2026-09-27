@@ -1,6 +1,8 @@
 from  fastapi import FastAPI
 from database import init_db
 from route.contract_route import router  as contracts_router 
+from fastapi.middleware.cors import CORSMiddleware
+from index_controller import api_router
 
 async def lifespan(app:FastAPI):
     await init_db()
@@ -9,24 +11,30 @@ async def lifespan(app:FastAPI):
     print("Shutting down the app")
 
 
+
 app = FastAPI(
-    title ="Vakeel Contract API",
-    description = "AI Powered Contract Analysis."
+    title ="Document Analyser API",
+    description = "AI Powered Document Analysis."
 )
 
 
-app.include_router(contracts_router)
-app.include_router(auth.router,       prefix="/api/v1/auth",       tags=["auth"])
-app.include_router(documents.router,  prefix="/api/v1/documents",  tags=["documents"])
-app.include_router(jobs.router,       prefix="/api/v1/jobs",       tags=["jobs"])
-app.include_router(query.router,      prefix="/api/v1",            tags=["query"])
-app.include_router(feedback.router,   prefix="/api/v1/feedback",   tags=["feedback"])
+# CORS FIRST
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],       
+    allow_headers=["*"],
+)
+
+
+app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get('/')
 def root():
     return {
-        "app" : "Vakeel contract api",
+        "app" : "Document Analyser",
         "versoin" :"1.0.0",
     }
 

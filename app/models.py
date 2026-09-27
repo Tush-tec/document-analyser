@@ -15,3 +15,5 @@ class Contract(BaseModel):
     def model_post_init(self, __context):
         if not self.upload_date:
             self.upload_date = datetime.now().isoformat()
+
+

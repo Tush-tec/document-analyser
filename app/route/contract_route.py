@@ -13,6 +13,7 @@ router = APIRouter(
 )
 
 
+# Upload Contract
 @router.post("/")
 async def upload_contract(file : UploadFile = File(...)):
     """
@@ -75,5 +76,6 @@ async def upload_contract(file : UploadFile = File(...)):
         "id": contract_data.id,
     }
     
+
 
 
