@@ -16,12 +16,10 @@ def extract_text_from_pdf(file : str):
         
     }
     
-    
-    
 
 def extract_text_from_txt(file :str):
     """
-    Extrac text from a txt file
+    Extract text from a txt file
 
     """
     with open(file, "r", encoding="utf-8") as f:

@@ -2,7 +2,7 @@
 import bcrypt
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
-from config import JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRE_MINUTES
+from core.config import settings
 
 
 def hash_password(password: str) -> str:
@@ -21,14 +21,14 @@ def verify_password(plain: str, hashed: str) -> bool:
 def create_access_token(user_id: str) -> str:
     payload = {
         "sub": user_id,
-        "exp": datetime.utcnow() + timedelta(minutes=JWT_EXPIRE_MINUTES),
+        "exp": datetime.utcnow() + timedelta(minutes= settings.JWT_EXPIRE_MINUTES),
     }
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
 
 
 def decode_token(token: str) -> str | None:
     try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         return payload.get("sub")
     except JWTError:
         return None

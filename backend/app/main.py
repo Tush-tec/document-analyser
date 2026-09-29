@@ -1,6 +1,5 @@
 from  fastapi import FastAPI
-from database import init_db
-from route.contract_route import router  as contracts_router 
+from core.db import init_db
 from fastapi.middleware.cors import CORSMiddleware
 from index_controller import api_router
 

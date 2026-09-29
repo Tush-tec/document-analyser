@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from utils.security import decode_token
-from database import users_collection
+from core.db import users_collection
 from bson import ObjectId
 
 bearer_scheme = HTTPBearer()

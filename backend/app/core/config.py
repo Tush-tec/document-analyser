@@ -1,45 +1,46 @@
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-MONGODB_URI= os.getenv("MONGODB_URI")
-
-ALLOWED_EXTENSION=[".pdf", ".txt"]
-MAX_FILE_MB=10
-
-
-UPLOAD_DIR="uploads"
-
-GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
-
-
-
+print("BASE DIR =========== 6", BASE_DIR)
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=BASE_DIR / ".env", 
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
-    DATABASE_URL: str
-    REDIS_URL: str
-    JWT_SECRET: str
+    # Mongo
+    DATABASE_URL: str                       
+
+    # Redis
+    REDIS_URL: str = "redis://localhost:6379/0"
+
+    # JWT
+    JWT_SECRET: str = "change-me-in-production"
     JWT_ALG: str = "HS256"
-    JWT_EXPIRE_MINUTES: int = 10080
+    JWT_EXPIRE_MINUTES: int = 60 * 24 * 7
 
-    S3_ENDPOINT: str
-    S3_ACCESS_KEY: str
-    S3_SECRET_KEY: str
-    S3_BUCKET: str
-    S3_REGION: str = "us-east-1"
-
+    # Gemini
     GEMINI_API_KEY: str
     GEMINI_EMBED_MODEL: str = "models/text-embedding-004"
-    GEMINI_CHAT_MODEL: str = "gemini-3.5-flash"
+    GEMINI_CHAT_MODEL: str = "gemini-2.5-flash"
 
-    QDRANT_URL: str
+    # Qdrant
+    QDRANT_URL: str = "http://localhost:6333"
     QDRANT_API_KEY: str = ""
 
-    MAX_UPLOAD_MB: int = 25
+    # Google OAuth
+    GOOGLE_CLIENT_ID: str = ""
+
+    # Uploads
+    UPLOAD_DIR: str = "uploads"
+    ALLOWED_EXTENSION: list[str] = [".pdf", ".txt"]
+    MAX_UPLOAD_MB: int = 10
+
+    # RAG
     EMBED_BATCH: int = 100
     CHUNK_TOKENS: int = 512
     CHUNK_OVERLAP: int = 64

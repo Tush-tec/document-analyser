@@ -1,6 +1,6 @@
 # routes/auth_routes.py
 from fastapi import APIRouter, Depends
-from schema.users import UserRegister, UserLogin
+from schemas.users import UserRegister, UserLogin
 from controller import user_controller
 from utils.auth_dependancy import require_auth
 from pydantic import BaseModel

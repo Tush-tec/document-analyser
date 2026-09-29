@@ -2,13 +2,13 @@ from datetime import datetime
 from bson import ObjectId
 from fastapi import HTTPException, status
 import random
-from database import users_collection
-from schema.users import UserRegister, UserLogin, user_documents
+from core.db import users_collection
+from schemas.users import UserRegister, UserLogin, user_documents
 from utils.security import create_access_token, hash_password, decode_token, verify_password
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
-from config import GOOGLE_CLIENT_ID
-from schema.users import GoogleUserData, google_user_document
+from core.config import settings
+from schemas.users import GoogleUserData, google_user_document
 
 
 async def register_user(register: UserRegister) -> dict:
@@ -105,7 +105,7 @@ async def google_login(token: str) -> dict:
         idinfo = id_token.verify_oauth2_token(
             token,
             google_requests.Request(),
-            GOOGLE_CLIENT_ID,
+            settings.GOOGLE_CLIENT_ID,
         )
     except ValueError:
         raise HTTPException(

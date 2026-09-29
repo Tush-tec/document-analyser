@@ -1,20 +1,12 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import os
 import uuid
-from config import ALLOWED_EXTENSION, MAX_FILE_MB, UPLOAD_DIR
+from core.config import ALLOWED_EXTENSION, MAX_FILE_MB, UPLOAD_DIR
 from service.doc_parser import extract_text
 from models import Contract
 
-from database import contracts_collection
+from core.db import documents_collection
 
-router = APIRouter(
-    prefix="/contracts",
-    tags=["contract"]
-)
-
-
-# Upload Contract
-@router.post("/")
 async def upload_contract(file : UploadFile = File(...)):
     """
     upload a PDF or TXT% contract for analysis
@@ -76,6 +68,3 @@ async def upload_contract(file : UploadFile = File(...)):
         "id": contract_data.id,
     }
     
-
-
-

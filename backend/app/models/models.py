@@ -4,7 +4,7 @@ from sqlalchemy import (String, Text, Integer, BigInteger, ForeignKey, DateTime,
                         Boolean, Numeric, JSON, func)
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID
-from app.core.db import Base
+from core.db import Base
 
 def _uuid(): return str(uuid.uuid4())
 
@@ -16,20 +16,7 @@ class User(Base):
     plan: Mapped[str] = mapped_column(String(20), default="free")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-class Document(Base):
-    __tablename__ = "documents"
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=_uuid)
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    filename: Mapped[str] = mapped_column(String(512))
-    mime_type: Mapped[str] = mapped_column(String(128))
-    size_bytes: Mapped[int] = mapped_column(BigInteger)
-    storage_key: Mapped[str] = mapped_column(String(512))
-    status: Mapped[str] = mapped_column(String(20), default="queued", index=True)
-    page_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    token_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    sha256: Mapped[str] = mapped_column(String(64), index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
 
 class Chunk(Base):
     __tablename__ = "chunks"
