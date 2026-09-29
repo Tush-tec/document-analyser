@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     JWT_SECRET: str = "change-me-in-production"
     JWT_ALG: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60 * 24 * 7
+    JWT_ALGORITHM:str
 
     # Gemini
     GEMINI_API_KEY: str
