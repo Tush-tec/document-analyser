@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import DocumentList from "./DocumentList";
 import UserMenu from "./UserMenu";
 import { useAuth } from "@/utils/Context/AuthContext";
+import DocumentList from "./DocumentList";
 
 export default function Sidebar() {
   const router = useRouter();

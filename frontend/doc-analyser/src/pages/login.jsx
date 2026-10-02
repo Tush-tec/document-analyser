@@ -66,3 +66,5 @@ export default function Login() {
     </AuthShell>
   );
 }
+
+Login.noLayout = true;

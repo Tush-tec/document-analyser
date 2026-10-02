@@ -1,18 +1,36 @@
+import { getDocuments } from "@/api/api";
+import { requestHandler } from "@/utils/app";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-// TODO: fetch from /api/v1/documents
-const MOCK_DOCS = [
-  { id: "1", name: "Employment Contract.pdf" },
-  { id: "2", name: "NDA - Acme Corp.pdf" },
-  { id: "3", name: "Service Agreement.docx" },
-];
-
-export default function DocumentList() {
+const DocumentList = () => {
   const router = useRouter();
   const activeId = router.query.id;
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  if (MOCK_DOCS.length === 0) {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    await requestHandler(
+      async () => getDocuments(),
+      setIsLoading,
+      (res) => {
+        setData(res.data);
+      },
+      (err) => {
+        setError(err);
+      },
+    );
+  };
+
+  if (isLoading) return <p>Loader..................</p>;
+
+  if (data.length === 0) {
     return (
       <div className="text-xs text-muted px-3 py-6 text-center">
         No documents yet.
@@ -24,7 +42,7 @@ export default function DocumentList() {
 
   return (
     <ul className="flex flex-col gap-1">
-      {MOCK_DOCS.map((doc) => {
+      {data.map((doc) => {
         const active = activeId === doc.id;
         return (
           <li key={doc.id}>
@@ -52,11 +70,13 @@ export default function DocumentList() {
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <path d="M14 2v6h6" />
               </svg>
-              <span className="truncate flex-1">{doc.name}</span>
+              <span className="truncate flex-1">{doc.original_name}</span>
             </Link>
           </li>
         );
       })}
     </ul>
   );
-}
+};
+
+export default DocumentList;

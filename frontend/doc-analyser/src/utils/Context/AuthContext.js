@@ -70,7 +70,8 @@ const AuthProvider = ({ children }) => {
 
         const accessToken = res.access_token;
         const user = res.user;
-        LocalStorage.set(accessToken, user);
+        LocalStorage.set("access_token", accessToken);
+        LocalStorage.set("user", user);
         setIsAuthenticated(true);
         router.push("/dashboard");
       },

@@ -6,16 +6,19 @@ from pydantic import BaseModel, Field, ConfigDict
 class Document(BaseModel):
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    id: str                          
-    user_id: str
-    filename: str
-    mime_type: str
-    size_bytes: int
-    storage_key: str
-    status: str = "queued"          
-    page_count: Optional[int] = None
+    id: Optional[str] = None           
+    user_id: Optional[str] = None      
+    filename: str                      
+    original_name: str                 
+    text_content: str                  
+    mime_type: Optional[str] = None
+    size_bytes: Optional[int] = None
+    storage_key: Optional[str] = None
+    status: str = "queued"
+    page_count: Optional[int] = 0
+    word_count: Optional[int] = 0
     token_count: Optional[int] = None
-    sha256: str
+    sha256: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     ready_at: Optional[datetime] = None
 
@@ -25,4 +28,3 @@ class Document(BaseModel):
         if "_id" in doc:
             doc["id"] = str(doc.pop("_id"))
         return cls(**doc)
-    
