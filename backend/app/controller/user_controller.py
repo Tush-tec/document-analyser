@@ -65,7 +65,6 @@ async def login (request : UserLogin) -> dict:
             detail="Invalid email or password"
         )
         
-    print("user ================= 68", user)
         
     token = create_access_token(str(user["_id"]))
     

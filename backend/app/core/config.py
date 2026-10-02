@@ -3,7 +3,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-print("BASE DIR =========== 6", BASE_DIR)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -19,7 +18,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # JWT
-    JWT_SECRET: str = "change-me-in-production"
+    JWT_SECRET: str
     JWT_ALG: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60 * 24 * 7
     JWT_ALGORITHM:str
@@ -35,6 +34,8 @@ class Settings(BaseSettings):
 
     # Google OAuth
     GOOGLE_CLIENT_ID: str = ""
+    
+    MAX_FILE_MB:int = 10 * 1024 * 1024
 
     # Uploads
     UPLOAD_DIR: str = "uploads"
