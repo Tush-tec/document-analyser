@@ -1,3 +1,4 @@
+import { LocalStorage } from "@/utils/app";
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -5,6 +6,19 @@ const apiClient = axios.create({
   withCredentials: true,
   timeout: 120000,
 });
+
+apiClient.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      const token = LocalStorage.get("access_token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 const userRegister = async (data) => {
   return apiClient.post("/auth/signup", data);
@@ -18,4 +32,12 @@ const googleLogin = async () => {
   return apiClient.post("/");
 };
 
-export { userRegister, UserLogin, googleLogin };
+const uploadDocuments = async (file) => {
+  return apiClient.post("/documents/upload", file);
+};
+
+const getDocuments = async () => {
+  return apiClient.get("/documents");
+};
+
+export { userRegister, UserLogin, googleLogin, uploadDocuments, getDocuments };
